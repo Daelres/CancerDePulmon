@@ -4,8 +4,7 @@ Este proyecto consiste en una aplicación desarrollada en Kotlin que utiliza té
 #### Despliegue en DigitalOcean
 La API de esta aplicación se despliega en un servidor proporcionado por DigitalOcean. Este entorno en la nube permite una implementación escalable y accesible de la aplicación, facilitando su acceso y uso desde diferentes ubicaciones.
 
-#### Repositorio de la API
-La API utilizada por esta aplicación se encuentra en el siguiente repositorio:
+
 
 #### Repositorio de la API de Cáncer de Pulmón
 
@@ -21,6 +20,9 @@ build.gradle.kts: Archivo de configuración de Gradle que especifica las depende
 settings.gradle.kts: Archivo que define la configuración del proyecto y los módulos incluidos.
 
 La aplicación se comunica con la API desplegada en DigitalOcean para enviar datos clínicos y demográficos del paciente y recibir una predicción sobre la probabilidad de tener cáncer de pulmón.
+
+#### Repositorio de la API
+La API utilizada por esta aplicación se encuentra en el siguiente repositorio:
 
 # **Link para el repositorio del modelo que se utiliso para la app** 
 https://github.com/Daelres/AplicacionCarcerDePulmon.git
