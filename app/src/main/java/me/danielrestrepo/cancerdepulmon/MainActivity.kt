@@ -1,5 +1,6 @@
 package me.danielrestrepo.cancerdepulmon
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -24,31 +25,32 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LungCancerApp("http://TU_IP_O_DOMINIO:8000")
+            LungCancerApp("http://138.197.49.239:8000")
         }
     }
 }
 
+@SuppressLint("AutoboxingStateCreation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LungCancerApp(baseUrl: String) {
     val context = LocalContext.current
-    var gender by remember { mutableStateOf(1) }
-    var age by remember { mutableStateOf(30f) }
-    var smoking by remember { mutableStateOf(1) }
-    var yellowF by remember { mutableStateOf(1) }
-    var anxiety by remember { mutableStateOf(1) }
-    var peerPressure by remember { mutableStateOf(1) }
-    var chronicDisease by remember { mutableStateOf(1) }
-    var fatigue by remember { mutableStateOf(1) }
-    var allergy by remember { mutableStateOf(1) }
-    var wheezing by remember { mutableStateOf(1) }
-    var alcohol by remember { mutableStateOf(1) }
-    var coughing by remember { mutableStateOf(1) }
-    var shortBreath by remember { mutableStateOf(1) }
-    var swallowing by remember { mutableStateOf(1) }
-    var chestPain by remember { mutableStateOf(1) }
-
+    var gender by remember { mutableIntStateOf(1) }
+    var age by remember { mutableFloatStateOf(30f) }
+    var smoking by remember { mutableIntStateOf(1) }
+    var yellowF by remember { mutableIntStateOf(1) }
+    var anxiety by remember { mutableIntStateOf(1) }
+    var peerPressure by remember { mutableIntStateOf(1) }
+    var chronicDisease by remember { mutableIntStateOf(1) }
+    var fatigue by remember { mutableIntStateOf(1) }
+    var allergy by remember { mutableIntStateOf(1) }
+    var wheezing by remember { mutableIntStateOf(1) }
+    var alcohol by remember { mutableIntStateOf(1) }
+    var coughing by remember { mutableIntStateOf(1) }
+    var shortBreath by remember { mutableIntStateOf(1) }
+    var swallowing by remember { mutableIntStateOf(1) }
+    var chestPain by remember { mutableIntStateOf(1) }
+    var isLoading by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
     var resultMsg by remember { mutableStateOf("") }
 
@@ -113,6 +115,7 @@ fun LungCancerApp(baseUrl: String) {
 
             Button(
                 onClick = {
+                    isLoading = true
                     CoroutineScope(Dispatchers.IO).launch {
                         val input = InputData(
                             GENDER = gender,
@@ -134,6 +137,7 @@ fun LungCancerApp(baseUrl: String) {
                         try {
                             val resp = api.predict(input)
                             withContext(Dispatchers.Main) {
+                                isLoading = false
                                 resultMsg = if (resp.prediction == 1)
                                     "El paciente PRESENTA indicios de cáncer de pulmón."
                                 else
@@ -142,6 +146,7 @@ fun LungCancerApp(baseUrl: String) {
                             }
                         } catch (e: Exception) {
                             withContext(Dispatchers.Main) {
+                                isLoading = false
                                 Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_LONG).show()
                             }
                         }
@@ -150,6 +155,14 @@ fun LungCancerApp(baseUrl: String) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Predecir")
+            }
+
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = 16.dp)
+                )
             }
 
             if (showDialog) {
